@@ -1,0 +1,132 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Appointment | Glow Beauty Salon</title>
+    <link rel="stylesheet" href="booking.css">
+</head>
+<body>
+
+    <header>
+        <h2 class="logo">Glow Beauty Salon</h2>
+        <a href="index.html" class="home-link">← Back to Home</a>
+    </header>
+
+    <main class="booking-container">
+
+        <h1>Book Your Appointment</h1>
+        <p class="intro">
+            Fill in your details to request your salon appointment.
+        </p>
+
+        <form id="bookingForm">
+
+            <label for="name">Full Name</label>
+            <input type="text" id="name" name="name"
+                   placeholder="Enter your name" required>
+
+           
+             <label for="phone">Phone Number:</label>
+             <input
+             type="tel"
+              id="phone"
+             name="phone"
+             placeholder="Enter 10-digit phone number"
+             pattern="[0-9]{10}"
+             maxlength="10"
+             minlength="10"
+             inputmode="numeric"
+             required
+>
+
+
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email"
+                   placeholder="Enter your email">
+
+            <label for="service">Select Service</label>
+            <select id="service" name="service" required>
+                <option value="">Choose a service</option>
+                <option>Hair Styling</option>
+                <option>Facial &amp; Skin Care</option>
+                <option>Nail Art</option>
+            </select>
+
+            <label for="date">Appointment Date</label>
+            <input type="date" id="date" name="date" required>
+
+            <label for="time">Preferred Time</label>
+            <select id="time" name="time" required>
+                <option value="">Choose a time</option>
+                <option>10:00 AM</option>
+                <option>12:00 PM</option>
+                <option>2:00 PM</option>
+                <option>4:00 PM</option>
+                <option>6:00 PM</option>
+            </select>
+
+            <label for="message">Additional Requests</label>
+            <textarea id="message" name="message" rows="3"
+                      placeholder="Any special requests?"></textarea>
+
+            <button type="submit">Submit Booking Request</button>
+
+            <p id="status" role="status"></p>
+        </form>
+
+    </main>
+
+    <footer>
+        <p>© 2026 Glow Beauty Salon</p>
+    </footer>
+
+    <script>
+        const form = document.getElementById("bookingForm");
+        const service = document.getElementById("service");
+        const date = document.getElementById("date");
+        const status = document.getElementById("status");
+
+        // Do not allow dates earlier than today.
+        const now = new Date();
+        const today = new Date(
+            now.getTime() - now.getTimezoneOffset() * 60000
+        ).toISOString().split("T")[0];
+
+        date.min = today;
+
+        // Preselect a service when coming from the main page.
+        const params = new URLSearchParams(window.location.search);
+        const selectedService = params.get("service");
+
+        if (selectedService) {
+            for (const option of service.options) {
+                if (option.text === selectedService) {
+                    service.value = option.value;
+                    break;
+                }
+            }
+        }
+
+        form.addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            if (!form.reportValidity()) {
+                return;
+            }
+
+            const name = document.getElementById("name").value;
+            const chosenService = service.value;
+            const chosenDate = date.value;
+
+            status.textContent =
+                "Thank you, " + name + "! Your request for " +
+                chosenService + " on " + chosenDate +
+                " has been prepared. This is a demo; your appointment " +
+                "has not been sent or confirmed.";
+        });
+    </script>
+
+</body>
+</html>
